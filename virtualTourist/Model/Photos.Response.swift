@@ -1,5 +1,5 @@
 //
-//  photoResponse.swift
+//  Photos.swift
 //  virtualTourist
 //
 //  Created by Khaled Kutbi on 06/10/1441 AH.
@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import UIKit
 
-struct photosResponse: Codable{
+struct Photo: Codable{
     
-    let photosResponse: Photos
+    let photo: [FlickerPhoto]
 }

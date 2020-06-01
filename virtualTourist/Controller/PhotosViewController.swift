@@ -11,7 +11,7 @@ import MapKit
 import CoreData
 
 
-class PhotoViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource , MKMapViewDelegate{
+class PhotoViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource , MKMapViewDelegate,NSFetchedResultsControllerDelegate{
 
     
     
@@ -19,24 +19,34 @@ class PhotoViewController: UIViewController , UICollectionViewDelegate, UICollec
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var photoCollection: UICollectionView!
     
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     //MARK:- Propeeties
     var cordinate: CLLocationCoordinate2D!
     var dataController: DataController!
     var selectedPin: Pin!
-    var flickerImages: [Photo]!
-    var fetchedRequest: NSFetchRequest<Photo>!
+    var flickerImages = ["hi","hi"]
+//    [Photo]!
+//    var fetchedRequest: NSFetchRequest<Photo>!
+    var fetchedResultsController: NSFetchedResultsController<Photo>!
     
     //MARK:- Init
     override func viewDidLoad() {
         super.viewDidLoad()
         
         delegation()
-        setupFetchRequest()
-        getPhotos()
+//        setupFetchRequest()
+        getFlickerPhotos()
+        setupFetchedResultsController()
+        configurCollectionFlowLayout()
     }
     override func viewWillAppear(_ animated: Bool) {
         addSelectedPinLocation()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+          super.viewWillDisappear(animated)
+          
+          fetchedResultsController = nil
+      }
     
     //MARK: - Actions
     @IBAction func newCollection(_ sender: Any) {
@@ -48,26 +58,35 @@ class PhotoViewController: UIViewController , UICollectionViewDelegate, UICollec
                photoCollection.reloadData()
                flickerImages.removeAll()
                //TODO:
-//               getPhotos()
+               getFlickerPhotos()
         
     }
     
     
-    
     //MARK: - Handlers
-     func getPhotos() {
-        // Decide if we need to retrieve photos from Flickr
-            FlickerClient.getFlickerPhotoSearch(latitude: cordinate.latitude, longitude: cordinate.longitude) { (photos, error) in
-                if let photos = photos {
-                    print("here is the : photos: \(photos)")
-                    self.addPhotosInfoCoreData(photos: photos)
-                    
-                    self.photoCollection.reloadData()
-                } else {
-                    // Show the user a proper error message
-                }
-        }
-    }
+     private func getFlickerPhotos() {
+          // Decide if we need to retrieve photos from Flickr
+        
+        FlickerClient.getFlickerPhotoSearch(latitude: cordinate.longitude, longitude: cordinate.longitude) { (photos, error) in
+                  if let photos = photos {
+                      self.addPhotosInfoCoreData(photos: photos)
+                      print("here is the : photos: \(photos)")
+                      self.photoCollection.reloadData()
+                  } else {
+                    self.showALert(title: "Message", message: "No image exist in this location.")
+                  }
+              
+          }
+        
+      }
+    private func getData(from photo: Photo, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+          if let data = photo.imageData {
+              completion(data, nil, nil)
+          } else {
+              URLSession.shared.dataTask(with: URL(string: photo.imageURL!)!, completionHandler: completion).resume()
+          }
+      }
+    //save photo to core data
     func addPhotosInfoCoreData(photos: [String]) {
         photos.forEach { (photoUrl) in
             let photo = Photo(context: dataController.viewContext)
@@ -79,14 +98,29 @@ class PhotoViewController: UIViewController , UICollectionViewDelegate, UICollec
             try? dataController.viewContext.save()
         }
     }
-    func setupFetchRequest() {
-        let predicate = NSPredicate(format: "pin == %@", selectedPin)
-              fetchedRequest = Photo.fetchRequest()
-            fetchedRequest.predicate = predicate
-        if let result = try? dataController.viewContext.fetch(fetchedRequest){
-            flickerImages = result
-        }
-    }
+//    func setupFetchRequest() {
+//        let predicate = NSPredicate(format: "pin == %@", selectedPin)
+//              fetchedRequest = Photo.fetchRequest()
+//            fetchedRequest.predicate = predicate
+//        if let result = try? dataController.viewContext.fetch(fetchedRequest){
+//            flickerImages = result
+//        }
+//    }
+    func setupFetchedResultsController() {
+          
+          let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+          let predicate = NSPredicate(format: "pin == %@", selectedPin)
+          fetchRequest.predicate = predicate
+          fetchRequest.sortDescriptors = []
+          
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+          fetchedResultsController.delegate = self
+          do{
+              try fetchedResultsController.performFetch()
+          }catch{
+              fatalError("The fetch could not be performed: \(error.localizedDescription)")
+          }
+      }
     func addSelectedPinLocation(){
         let annotation = MKPointAnnotation()
         annotation.coordinate = cordinate
@@ -102,16 +136,42 @@ class PhotoViewController: UIViewController , UICollectionViewDelegate, UICollec
         self.photoCollection.dataSource = self
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return flickerImages.count
+        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! photoCollectionCell
         
-//        cell?.flickerImage.image =
+        let photo = fetchedResultsController.object(at: indexPath)
+        
+        getData(from: photo) { (data, response, error) in
+            guard let data = data, error == nil else { return }
+            DispatchQueue.main.async {
+                cell.flickerImage.image = UIImage(data: data)
+                }
+            }
+            
+            
+        
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         let photoToDelete = fetchedResultsController.object(at: indexPath)
+        dataController.viewContext.delete(photoToDelete)
+        try? dataController.viewContext.save()
+        photoCollection.reloadData()
+    }
+    
+    func configurCollectionFlowLayout(){
+           let space:CGFloat = 3.0
+           let dimension = (view.frame.size.width - (2 * space)) / 3.0
+
+           flowLayout.minimumInteritemSpacing = space
+           flowLayout.minimumLineSpacing = space
+           flowLayout.itemSize = CGSize(width: dimension, height: dimension)
+       }
     
     
 }

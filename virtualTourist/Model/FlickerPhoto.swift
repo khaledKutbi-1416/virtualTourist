@@ -7,39 +7,13 @@
 //
 
 import Foundation
-import UIKit
 
 
-class FlickerPhoto: Codable{
+struct FlickerPhoto: Codable{
     
     let id: String
-    let owner: String
-    let secret: String
-    let server: String
-    let farm: Int
     let title: String
-    let ispublic: Int
-    let isfriend: Int
-    let isfamily: Int
-    let url: String
-    let height: Int
-    let width: Int
-    
-    enum codeingKeys: String,CodingKey{
-        case id
-        case owner
-        case secret
-        case server
-        case farm
-        case title
-        case ispublic
-        case isfriend
-        case isfamily
-        case url = "url_n"
-        case height = "height_n"
-        case width = "width_n"
-        
-    }
+    let url_n: String
     
 }
 

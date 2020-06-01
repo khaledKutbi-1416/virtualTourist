@@ -17,10 +17,11 @@
 		18044DA2247F423C0068020E /* virtualTouristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18044DA1247F423C0068020E /* virtualTouristUITests.swift */; };
 		187AC4C824827D3E004FB229 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 187AC4C624827D3E004FB229 /* VirtualTourist.xcdatamodeld */; };
 		187AC4CA2482812A004FB229 /* Photo+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187AC4C92482812A004FB229 /* Photo+Extention.swift */; };
+		18C9B7372485292600CE28E2 /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9B7362485292600CE28E2 /* PhotoResponse.swift */; };
+		18C9B73B2485394C00CE28E2 /* Helper_Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9B73A2485394C00CE28E2 /* Helper_Extentions.swift */; };
 		18CE014C247F58AB008AF53F /* FlickerClinet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE014B247F58AB008AF53F /* FlickerClinet.swift */; };
 		18CE014E2481287C008AF53F /* FlickerPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE014D2481287C008AF53F /* FlickerPhoto.swift */; };
-		18CE015024812C45008AF53F /* photosResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE014F24812C45008AF53F /* photosResponse.swift */; };
-		18CE015224814860008AF53F /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE015124814860008AF53F /* Photos.swift */; };
+		18CE015024812C45008AF53F /* PhotosResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE014F24812C45008AF53F /* PhotosResponse.swift */; };
 		18CE01582481FCF7008AF53F /* DataController .swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE01572481FCF7008AF53F /* DataController .swift */; };
 		18CE015A2481FFD8008AF53F /* Pin+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE01592481FFD8008AF53F /* Pin+Extention.swift */; };
 		18CE015C248200C0008AF53F /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE015B248200C0008AF53F /* PhotosViewController.swift */; };
@@ -60,10 +61,11 @@
 		18044DA3247F423C0068020E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		187AC4C724827D3E004FB229 /* MapDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MapDataModel.xcdatamodel; sourceTree = "<group>"; };
 		187AC4C92482812A004FB229 /* Photo+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+Extention.swift"; sourceTree = "<group>"; };
+		18C9B7362485292600CE28E2 /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
+		18C9B73A2485394C00CE28E2 /* Helper_Extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper_Extentions.swift; sourceTree = "<group>"; };
 		18CE014B247F58AB008AF53F /* FlickerClinet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickerClinet.swift; sourceTree = "<group>"; };
 		18CE014D2481287C008AF53F /* FlickerPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickerPhoto.swift; sourceTree = "<group>"; };
-		18CE014F24812C45008AF53F /* photosResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photosResponse.swift; sourceTree = "<group>"; };
-		18CE015124814860008AF53F /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		18CE014F24812C45008AF53F /* PhotosResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosResponse.swift; sourceTree = "<group>"; };
 		18CE01572481FCF7008AF53F /* DataController .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataController .swift"; sourceTree = "<group>"; };
 		18CE01592481FFD8008AF53F /* Pin+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+Extention.swift"; sourceTree = "<group>"; };
 		18CE015B248200C0008AF53F /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				18044D7F247F42390068020E /* AppDelegate.swift */,
+				18C9B73A2485394C00CE28E2 /* Helper_Extentions.swift */,
 				18CE015324819013008AF53F /* Core data */,
 				18CE014A247F5883008AF53F /* APIs */,
 				18044DAF247F42420068020E /* Model */,
@@ -151,8 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				18CE014D2481287C008AF53F /* FlickerPhoto.swift */,
-				18CE015124814860008AF53F /* Photos.swift */,
-				18CE014F24812C45008AF53F /* photosResponse.swift */,
+				18C9B7362485292600CE28E2 /* PhotoResponse.swift */,
+				18CE014F24812C45008AF53F /* PhotosResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -329,15 +332,16 @@
 				18044D84247F42390068020E /* MapViewController.swift in Sources */,
 				187AC4C824827D3E004FB229 /* VirtualTourist.xcdatamodeld in Sources */,
 				18CE015C248200C0008AF53F /* PhotosViewController.swift in Sources */,
-				18CE015024812C45008AF53F /* photosResponse.swift in Sources */,
+				18C9B7372485292600CE28E2 /* PhotoResponse.swift in Sources */,
+				18CE015024812C45008AF53F /* PhotosResponse.swift in Sources */,
 				18CE01582481FCF7008AF53F /* DataController .swift in Sources */,
 				18CE014C247F58AB008AF53F /* FlickerClinet.swift in Sources */,
 				18CE015A2481FFD8008AF53F /* Pin+Extention.swift in Sources */,
 				187AC4CA2482812A004FB229 /* Photo+Extention.swift in Sources */,
 				18044D80247F42390068020E /* AppDelegate.swift in Sources */,
 				18044D82247F42390068020E /* SceneDelegate.swift in Sources */,
+				18C9B73B2485394C00CE28E2 /* Helper_Extentions.swift in Sources */,
 				18CE014E2481287C008AF53F /* FlickerPhoto.swift in Sources */,
-				18CE015224814860008AF53F /* Photos.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

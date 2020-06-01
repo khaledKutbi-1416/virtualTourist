@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Map View Controller-->
+        <!--Map-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="virtualTourist" customModuleProvider="target" sceneMemberID="viewController">
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="2Yt-Qc-Lzg">
-                                <rect key="frame" x="0.0" y="44" width="320" height="436"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="387"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -29,7 +29,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O5a-by-toJ"/>
                     </view>
-                    <navigationItem key="navigationItem" id="2Ql-ez-ZbR"/>
+                    <navigationItem key="navigationItem" title="Map" id="2Ql-ez-ZbR"/>
                     <connections>
                         <outlet property="mapView" destination="2Yt-Qc-Lzg" id="YT6-DY-vM0"/>
                         <segue destination="toR-Dc-c5w" kind="push" identifier="" id="aTm-RH-DL0"/>
@@ -39,7 +39,7 @@
             </objects>
             <point key="canvasLocation" x="727.5" y="96.25"/>
         </scene>
-        <!--Photo View Controller-->
+        <!--Selected Location-->
         <scene sceneID="nfz-rP-Ye7">
             <objects>
                 <viewController storyboardIdentifier="PhotoVC" id="toR-Dc-c5w" customClass="PhotoViewController" customModule="virtualTourist" customModuleProvider="target" sceneMemberID="viewController">
@@ -112,9 +112,10 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Qug-RU-S2l"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="SNk-dv-GPg"/>
+                    <navigationItem key="navigationItem" title="Selected Location" id="SNk-dv-GPg"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="flowLayout" destination="GTb-eu-nHJ" id="82X-Ha-eMK"/>
                         <outlet property="mapView" destination="HHv-5I-cjn" id="3Uy-6h-RSe"/>
                         <outlet property="photoCollection" destination="n7b-8F-K7a" id="8wT-qE-YZV"/>
                     </connections>
@@ -126,13 +127,18 @@
         <!--Navigation Controller-->
         <scene sceneID="EeV-jD-ARY">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tC7-cH-tj5" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="tC7-cH-tj5" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ojf-T4-hVR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fa8-jO-Wr4">
+                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="LN2-gE-Too"/>
                     </connections>

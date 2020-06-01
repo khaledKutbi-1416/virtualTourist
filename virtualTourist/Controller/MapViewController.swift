@@ -14,12 +14,14 @@ class MapViewController: UIViewController , NSFetchedResultsControllerDelegate, 
     //MARK:- Properties
     var pins:[Pin] = []
     var dataController:DataController!
+    var fetchedResultsController: NSFetchedResultsController<Pin>!
     
     
     //MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFetchRequest()
+
         creatMapRecognizer()
         self.mapView.delegate = self
     }
@@ -28,6 +30,7 @@ class MapViewController: UIViewController , NSFetchedResultsControllerDelegate, 
     override func viewWillAppear(_ animated: Bool) {
           super.viewWillAppear(animated)
           setupFetchRequest()
+    
       }
     //MARK: - UI
     func creatMapRecognizer(){
@@ -62,6 +65,8 @@ class MapViewController: UIViewController , NSFetchedResultsControllerDelegate, 
                }
     }
   //MARK:- Fetch result from data model
+
+    
     func setupFetchRequest() {
            let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
                if let result = try? dataController.viewContext.fetch(fetchRequest){
@@ -134,7 +139,8 @@ extension MapViewController {
             if pin.latitude.isEqual(to: view.annotation?.coordinate.latitude.magnitude ?? 90){
                 photosViewController!.selectedPin = pin
         }
-            navigationController?.pushViewController(photosViewController!, animated: true)
+           
         }
+         navigationController?.pushViewController(photosViewController!, animated: true)
     }
 }
