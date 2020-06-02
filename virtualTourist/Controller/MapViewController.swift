@@ -21,7 +21,7 @@ class MapViewController: UIViewController , NSFetchedResultsControllerDelegate, 
         super.viewDidLoad()
         setupFetchRequest()
 
-        creatMapRecognizer()
+        creatMapGisture()
         self.mapView.delegate = self
     }
  
@@ -32,7 +32,7 @@ class MapViewController: UIViewController , NSFetchedResultsControllerDelegate, 
     
       }
     //MARK: - UI
-    func creatMapRecognizer(){
+    func creatMapGisture(){
        let Gestur = UILongPressGestureRecognizer(target: self, action: #selector(addPin))
         Gestur.minimumPressDuration = 0.4
         Gestur.delegate = self

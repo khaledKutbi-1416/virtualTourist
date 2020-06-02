@@ -16,21 +16,25 @@ class PhotoViewController: UIViewController {
     //MARK:- Outlet
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var photoCollection: UICollectionView!
+    let indecator = UIActivityIndicatorView()
   
     //MARK:- Propeeties
     var cordinate: CLLocationCoordinate2D!
     var dataController: DataController!
     var selectedPin: Pin!
     var fetchedResultsController: NSFetchedResultsController<Photo>!
+  
     
     //MARK:- Init
     override func viewDidLoad() {
         super.viewDidLoad()
         
         delegation()
+     
         setupFetchedResultsController()
         checkPhotoInlocation()
         getFlickerPhotos()
+        confugreUI(isLoading: true)
     }
     override func viewWillAppear(_ animated: Bool) {
         addSelectedPinLocation()
@@ -59,22 +63,40 @@ class PhotoViewController: UIViewController {
     
     
     //MARK: - Handlers
+    //Configure UI
+    func confugreUI(isLoading: Bool){
+        self.indecator.color = .gray
+        self.indecator.center = view.center
+        self.view.addSubview(indecator)
+        self.indecator.hidesWhenStopped = !isLoading
+        self.photoCollection.isHidden = isLoading
+        if isLoading{
+        self.indecator.startAnimating()
+        }else{
+        self.indecator.stopAnimating()
+        }
+
+
+    }
     func checkPhotoInlocation(){
         if fetchedResultsController.fetchedObjects!.isEmpty{
+                    confugreUI(isLoading: false)
                    showALertNextAction(title: "Messgae", message: "No sush photo in this location.")
                }
     }
-     private func getFlickerPhotos() {
+      func getFlickerPhotos() {
           // Decide if we need to retrieve photos from Flickr
         
         FlickerClient.getFlickerPhotoSearch(latitude: cordinate.longitude, longitude: cordinate.longitude) { (photos, error) in
                   if let photos = photos {
                       self.addPhotosInfoCoreData(photos: photos)
                       print("here is the : photos: \(photos)")
-                      self.photoCollection.reloadData()
-                  
-                  } else {
-                  }
+              
+                        self.photoCollection.reloadData()
+                
+                      
+                    self.confugreUI(isLoading: false)
+                  } 
               
           }
         
@@ -150,11 +172,10 @@ class PhotoViewController: UIViewController {
 class photoCollectionCell:UICollectionViewCell{
     
     @IBOutlet weak var flickerImage: UIImageView!
-    
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         
     }
 }
@@ -169,19 +190,18 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
       }
       
       func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! photoCollectionCell
-          
+         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! photoCollectionCell
+            
           let photo = fetchedResultsController.object(at: indexPath)
-          
+        
           getData(from: photo) { (data, response, error) in
               guard let data = data, error == nil else { return }
-              DispatchQueue.main.async {
-                  cell.flickerImage.image = UIImage(data: data)
-                  }
-              }
-              
-              
           
+                 cell.flickerImage.image = UIImage(data: data)
+            
+        
+              }
+            
           return cell
       }
       
@@ -189,8 +209,36 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
            let photoToDelete = fetchedResultsController.object(at: indexPath)
           dataController.viewContext.delete(photoToDelete)
           try? dataController.viewContext.save()
-          photoCollection.reloadData()
+        
+            self.photoCollection.reloadData()
+        
+         
       }
+        
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         
+         let bounds = collectionView.bounds
+         let width = (bounds.width/3)-4
+         return CGSize(width: width, height:width)
+         
+        }
+     
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+         
+         return UIEdgeInsets(top:2, left:2, bottom:2, right:2)
+        }
+     
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+         
+         return 0
+        }
+     
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+         
+         return 0
+         
+        }
+     
     
 }
 //MapKit
@@ -229,3 +277,4 @@ extension PhotoViewController:NSFetchedResultsControllerDelegate {
         }
     }
 }
+
