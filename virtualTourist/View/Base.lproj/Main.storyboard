@@ -75,6 +75,10 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9e0-8F-KJU">
                                                             <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="4cO-hy-7yE"/>
+                                                                <constraint firstAttribute="width" secondItem="9e0-8F-KJU" secondAttribute="height" multiplier="1:1" id="4s7-w8-ia6"/>
+                                                            </constraints>
                                                         </imageView>
                                                     </subviews>
                                                     <constraints>
@@ -115,7 +119,6 @@
                     <navigationItem key="navigationItem" title="Selected Location" id="SNk-dv-GPg"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="flowLayout" destination="GTb-eu-nHJ" id="82X-Ha-eMK"/>
                         <outlet property="mapView" destination="HHv-5I-cjn" id="3Uy-6h-RSe"/>
                         <outlet property="photoCollection" destination="n7b-8F-K7a" id="8wT-qE-YZV"/>
                     </connections>
@@ -131,7 +134,7 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ojf-T4-hVR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

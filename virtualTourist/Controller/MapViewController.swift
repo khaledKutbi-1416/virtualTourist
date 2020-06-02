@@ -14,7 +14,6 @@ class MapViewController: UIViewController , NSFetchedResultsControllerDelegate, 
     //MARK:- Properties
     var pins:[Pin] = []
     var dataController:DataController!
-    var fetchedResultsController: NSFetchedResultsController<Pin>!
     
     
     //MARK: - Init
