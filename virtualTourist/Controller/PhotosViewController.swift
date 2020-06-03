@@ -32,13 +32,11 @@ class PhotoViewController: UIViewController {
         delegation()
      
         setupFetchedResultsController()
-        checkPhotoInlocation()
         getFlickerPhotos()
         confugreUI(isLoading: true)
     }
     override func viewWillAppear(_ animated: Bool) {
         addSelectedPinLocation()
-
 
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -54,10 +52,17 @@ class PhotoViewController: UIViewController {
 
                    try? dataController.viewContext.save()
                })
-              
-                photoCollection.reloadData()
+            
                 
                 getFlickerPhotos()
+        
+
+            self.photoCollection.reloadData()
+
+      
+        
+      
+
         
     }
     
@@ -78,27 +83,26 @@ class PhotoViewController: UIViewController {
 
 
     }
-    func checkPhotoInlocation(){
-        if fetchedResultsController.fetchedObjects!.isEmpty{
-                    confugreUI(isLoading: false)
-                   showALertNextAction(title: "Messgae", message: "No sush photo in this location.")
-               }
-    }
+   
       func getFlickerPhotos() {
           // Decide if we need to retrieve photos from Flickr
         
         FlickerClient.getFlickerPhotoSearch(latitude: cordinate.longitude, longitude: cordinate.longitude) { (photos, error) in
-                  if let photos = photos {
-                      self.addPhotosInfoCoreData(photos: photos)
-                      print("here is the : photos: \(photos)")
-              
-                        self.photoCollection.reloadData()
+            if let photos = photos {
+                self.addPhotosInfoCoreData(photos: photos)
+                print("here is the : photos: \(photos)")
                 
-                      
-                    self.confugreUI(isLoading: false)
-                  } 
-              
-          }
+                DispatchQueue.main.async {
+                    self.photoCollection.reloadData()
+                }
+                
+                
+                self.confugreUI(isLoading: false)
+                self.photoCollection.reloadData()
+                
+            }
+            
+        }
         
       }
     //Helper functions
@@ -197,9 +201,9 @@ extension PhotoViewController: UICollectionViewDelegate, UICollectionViewDataSou
           getData(from: photo) { (data, response, error) in
               guard let data = data, error == nil else { return }
           
+            DispatchQueue.main.async {
                  cell.flickerImage.image = UIImage(data: data)
-            
-        
+            }
               }
             
           return cell
